@@ -2,7 +2,8 @@
 set_include_path('./classes');
 spl_autoload_register();
 
-$cache = new Cache();
+$memCache = new Memcached();
+$cache = new Cache($memCache);
 $database = new Database();
 $imdbTopTen = new ImdbTopTen($database, $cache);
 

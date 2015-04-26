@@ -3,11 +3,13 @@
 class ParseImdbHtml
 {
 	
-	protected $domXPath, $topTenMovies;
+	protected $domXPath;
 	
-	public function __construct(GetImdbHtml $imdbHtml)
+	protected $topTenMovies = array();
+	
+	public function __construct(DomXPath $domXPath)
 	{
-		$this->domXPath = new DomXPath($imdbHtml->domDocument);
+		$this->domXPath = $domXPath;
 	}
 	
 	private function filterHtml()
@@ -19,11 +21,11 @@ class ParseImdbHtml
 	{
 		$moviesHtml = $this->filterHtml();
 		$movieCount = 1;
-		$this->topTenMovies = array();
+		$dateId = $this->getDateId();
 		foreach ($moviesHtml AS $movieHtml) {
 			if ($movieCount <= 10) {
 				$this->topTenMovies[] = array(
-					'date_id' => $this->dateId,
+					'date_id' => $dateId,
 					'movie_rank' => $movieCount,
 					'movie_title' => $this->getTitle($movieHtml),
 					'movie_year' => $this->getYear($movieHtml),
@@ -33,7 +35,6 @@ class ParseImdbHtml
 			}
 			$movieCount++;
 		}
-		return $this->topTenMovies;
 	}
 	
 	private function getTitle($movieHtml)

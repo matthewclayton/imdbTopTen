@@ -4,9 +4,9 @@ class GetImdbHtml
 {
 	public $domDocument;
 	
-	public function __construct()
+	public function __construct(DOMDocument $domDocument)
 	{
-		$this->domDocument = new DOMDocument();
+		$this->domDocument = $domDocument;
 		$this->setHtml();
 	}
 	

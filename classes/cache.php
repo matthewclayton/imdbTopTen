@@ -6,9 +6,9 @@ class Cache
 	
 	protected $memCache;
 	
-	public function __construct()
+	public function __construct(Memcached $memCache)
 	{
-		$this->memCache = new Memcached();
+		$this->memCache = $memCache;
 		$this->memCache->addServer('127.0.0.1', 11211);
 	}
 	

@@ -2,36 +2,46 @@
 
 class SaveTopTen extends ParseImdbHtml
 {
-	
-	protected $dateId;
-	
+
 	protected $database;
 	
-	public function __construct(GetImdbHtml $imdbHtml, Database $database)
+	protected $dateQueryData;
+	
+	public function __construct(DomXPath $domXPath, Database $database)
 	{
-		parent::__construct($imdbHtml);
-		//$this->topTenMovies = $this->setTopTen();
+		parent::__construct($domXPath);
 		$this->database = $database;
+		$this->setDateQueryData();
+		$this->saveDate();
+		$this->setTopTen();
+		$this->saveTopTen();
 	}
 	
-	public function saveTopTen()
+	protected function getDateId()
 	{
-		$this->saveDate();
-		$this->topTenMovies = $this->setTopTen();
+		return $this->database->getLastInsertId();
+	}
+	
+	private function saveTopTen()
+	{
 		$this->database->setTableName('movie_data');
 		$this->database->setQueryData($this->topTenMovies);
 		$this->database->insertMultiple();		
 	}
 	
-	public function saveDate()
+	private function setDateQueryData()
 	{
 		$date = date('Y-n-j');
-		$mdata = array(
+		$this->dateQueryData = array(
 				'fetch_date' => $date,
 			);
+	}
+	
+	private function saveDate()
+	{
 		$this->database->setTableName('movie_dates');
-		$this->database->setQueryData($mdata);
-		$this->dateId = $this->database->insert();
+		$this->database->setQueryData($this->dateQueryData);
+		$this->database->insert();
 	}
 
 	

@@ -5,13 +5,15 @@ class ImdbTopTen
 	
 	CONST TOPTENURL = 'http://www.imdb.com/chart/top';
 	
-	//CONST TODAYSDATE = date('Y-n-j');
-	
 	protected $imdbDate;
+	
 	protected $dateId = FALSE;
+	
 	protected $movieData;
 	
-	protected $database, $cache;
+	protected $database;
+	
+	protected $cache;
 
 	public function __construct(Database $database, cache $cache)
 	{
@@ -21,7 +23,7 @@ class ImdbTopTen
 		$this->setMovieData();
 	}
 	
-	public function isCached()
+	private function isCached()
 	{
 		$this->cache->setCacheData($this->dateId);
 		return $this->cache->getCacheData();
@@ -32,7 +34,7 @@ class ImdbTopTen
 		return $this->movieData;
 	}
 	
-	public function getCacheArray()
+	private function getCacheArray()
 	{
 		foreach ($this->movieData AS $movieData) {
 			$movieDataArray[] = array(
@@ -47,10 +49,10 @@ class ImdbTopTen
 		return $movieDataArray;
 	}
 	
-	public function setMovieData()
+	private function setMovieData()
 	{
 		$this->setDateId();
-		if ($this->checkDateExists() === TRUE) {
+		if ($this->isDateValid() === TRUE) {
 			if ($this->isCached() !== FALSE) {
 				$this->movieData = $this->cache->cacheData;
 			}
@@ -70,12 +72,12 @@ class ImdbTopTen
 		
 	}
 	
-	public function checkDateExists()
+	private function isDateValid()
 	{
 		return is_numeric($this->dateId);
 	}
 	
-	public function setDateId()
+	private function setDateId()
 	{
 		$queryArray = array(
 			'fetch_date' => $this->imdbDate,
