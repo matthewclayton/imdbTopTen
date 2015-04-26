@@ -2,7 +2,6 @@
 
 class Database
 {
-	
 	private $dbHost = 'localhost';
 	
 	private $dbUser = '';
@@ -170,7 +169,6 @@ class Database
 		return $prepareStmt->get_result();
 	}
 	
-	
 	public function joinSelect($joinTable, $joinKey)
 	{
 		$this->setPlaceholders(); 
@@ -192,8 +190,7 @@ class Database
 			$this->numRows++;
 		}
 		return $prepareStmt->get_result();
-	}
-	
+	}	
 }
 
 ?>
