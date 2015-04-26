@@ -22,9 +22,9 @@ class Cache
 		return $this->cacheData;
 	}
 	
-	public function saveCacheData()
+	public function saveCacheData($cacheKey, $cacheArray)
 	{
-		$this->memCache->set($this->dateId, $this->dateDataArray);
+		$this->memCache->set($cacheKey, $cacheArray);
 	}
 }
 

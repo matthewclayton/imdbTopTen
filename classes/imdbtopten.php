@@ -32,6 +32,21 @@ class ImdbTopTen
 		return $this->movieData;
 	}
 	
+	public function getCacheArray()
+	{
+		foreach ($this->movieData AS $movieData) {
+			$movieDataArray[] = array(
+				'movie_rank' => $movieData['movie_rank'],
+				'movie_title' => $movieData['movie_title'],
+				'movie_year' => $movieData['movie_year'],
+				'movie_rating' => $movieData['movie_rating'],
+				'movie_votes' => $movieData['movie_votes'],
+				'fetch_date' => $movieData['fetch_date'],
+			);
+		}
+		return $movieDataArray;
+	}
+	
 	public function setMovieData()
 	{
 		$this->setDateId();
@@ -46,6 +61,7 @@ class ImdbTopTen
 				$this->database->setTableName('movie_data');
 				$this->database->setQueryData($queryArray);
 				$this->movieData = $this->database->joinSelect('movie_dates', 'date_id');
+				$this->cache->saveCacheData($this->dateId, $this->getCacheArray());
 			}
 		}
 		else {
