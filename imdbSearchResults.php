@@ -9,8 +9,8 @@ $database = new Database();
 $imdbTopTen = new ImdbTopTen($database, $cache);
 //}
 
-$imdbTopTen->setDateData();
-$imdbTopTen->t();
+$movieData = $imdbTopTen->getMovieData();
 
+include ('views/movieList.phtml');
 
 ?>

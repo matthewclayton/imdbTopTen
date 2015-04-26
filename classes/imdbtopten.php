@@ -18,6 +18,7 @@ class ImdbTopTen
 		$this->imdbDate = $_POST['imdbDate'];
 		$this->database = $database;
 		$this->cache = $cache;
+		$this->setMovieData();
 	}
 	
 	public function isCached()
@@ -26,47 +27,31 @@ class ImdbTopTen
 		return $this->cache->getCacheData();
 	}
 	
-	public function setDateData()
+	public function getMovieData()
+	{
+		return $this->movieData;
+	}
+	
+	public function setMovieData()
 	{
 		$this->setDateId();
-		if ($this->checkDateExists() === FALSE)
-		{
+		if ($this->checkDateExists() === TRUE) {
+			if ($this->isCached() !== FALSE) {
+				$this->movieData = $this->cache->cacheData;
+			}
+			else {
+				$queryArray = array(
+					'movie_data.date_id' => $this->dateId,
+				);
+				$this->database->setTableName('movie_data');
+				$this->database->setQueryData($queryArray);
+				$this->movieData = $this->database->joinSelect('movie_dates', 'date_id');
+			}
+		}
+		else {
 			$this->movieData = FALSE;
 		}
 		
-		if ($this->isCached() !== FALSE)
-		{
-			$this->movieData = $this->cache->cacheData;
-		}
-		else
-		{
-			$queryArray = array(
-				'movie_data.date_id' => $this->dateId,
-			);
-			$this->database->setTableName('movie_data');
-			$this->database->setQueryData($queryArray);
-			$this->movieData = $this->database->joinSelect('movie_dates', 'date_id');
-		}
-		
-	}
-	
-	public function t()
-	{
-		echo '<table style="width:50%">';
-		echo '<tr> <td> Rank </td> <td> Title </td> <td> Year </td> <td> 
-		Rating </td> <td> Votes </td> <td> Date Added </td> </tr>';
-		foreach ($this->movieData as $key => $movie) {
-			echo '<tr>';
-			echo ' <td> ' . $movie['movie_rank'] . 
-			' </td><td> ' . $movie['movie_title'] . 
-			' </td><td> ' . $movie['movie_year'] . 
-			' </td><td> ' . $movie['movie_rating'] . 
-			' </td><td> ' . $movie['movie_votes'] .
-			' </td><td> ' . $movie['fetch_date'] .
-			'</td>';
-			echo '</tr>';
-		}
-		echo '</table>';
 	}
 	
 	public function checkDateExists()

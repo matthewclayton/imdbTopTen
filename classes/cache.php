@@ -21,6 +21,11 @@ class Cache
 	{
 		return $this->cacheData;
 	}
+	
+	public function saveCacheData()
+	{
+		$this->memCache->set($this->dateId, $this->dateDataArray);
+	}
 }
 
 ?>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+<title> IMDB Top Ten Search Results </title>
+
+<?php if ($movieData === FALSE) : ?>
+	<?php echo 'Date not found'; ?>
+<?php else: ?>
+	<p> Top Ten Movies </p>
+	<table style="width:50%">
+	<tr> 
+		<td> Rank </td> 
+		<td> Title </td> 
+		<td> Year </td> 
+		<td> Rating </td> 
+		<td> Votes </td> 
+		<td> Date Added </td> 
+	</tr>
+	<?php foreach ($movieData as $key => $movie) : ?>
+	<tr>
+		<td><?=$movie['movie_rank'];?></td>
+		<td><?=$movie['movie_title'];?></td>
+		<td><?=$movie['movie_year'];?></td>
+		<td><?=number_format($movie['movie_rating'], 1);?></td>
+		<td><?=$movie['movie_votes'];?></td>
+		<td><?=$movie['fetch_date'];?></td>
+	</tr>
+	<?php endforeach; ?>
+</table>
+<?php endif; ?>

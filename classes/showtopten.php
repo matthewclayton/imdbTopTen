@@ -1,7 +1,12 @@
 <?php
 
-class ImdbTopTenGet extends ImdbTopTen
+class ShowTopTen extends ImdbTopTen
 {
+	
+	public function __construct()
+	{
+		
+	}
 	
 }
 
